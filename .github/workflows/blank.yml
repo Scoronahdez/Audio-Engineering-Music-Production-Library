@@ -1,0 +1,22 @@
+name: Update PDF Index
+
+on:
+  push:
+    branches: [ "main" ]
+
+jobs:
+  update-index:
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@v4
+      - name: Generate PDF list
+        run: |
+          echo "# My Audio Engineering Library" > PDF_INDEX.md
+          find . -name "*.pdf" >> PDF_INDEX.md
+      - name: Commit updated index
+        run: |
+          git config --local user.name "GitHub Actions"
+          git config --local user.email "actions@github.com"
+          git add PDF_INDEX.md
+          git commit -m "Update PDF index" || echo "No changes to commit"
+          git push
